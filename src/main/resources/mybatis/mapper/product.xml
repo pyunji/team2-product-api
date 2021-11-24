@@ -2,16 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.ProductDao">
 	<resultMap type="com.mycompany.webapp.dto.ProductList" id="productListResultMap">
-		<id property="pstockId" column="pstockid"/>
-		<result property="productName" column="pname"/>
-		<result property="sizeCode" column="size_code"/>
-		<result property="colorCode" column="color_code"/>
-		<result property="price" column="price"/>
+		<id property="pstockid" column="pstockid"/>
+		<result property="pname" column="pname"/>
+		<result property="img1" column="img1"/>
+		<result property="scode" column="scode"/>
+		<result property="ccode" column="ccode"/>
+		<result property="pprice" column="pprice"/>
 		<result property="stock" column="stock"/>
-		<result property="brandName" column="bname"/>
-		<result property="depth1Name" column="depth1_name"/>
-		<result property="depth2Name" column="depth2_name"/>
-		<result property="depth3Name" column="depth3_name"/>
+		<result property="bname" column="bname"/>
+		<result property="d1name" column="d1name"/>
+		<result property="d2name" column="d2name"/>
+		<result property="d3name" column="d3name"/>
 	</resultMap>
 		
 <!-- 	<select id="getProductList" parameterType="com.mycompany.webapp.dto.Pager" resultMap="productListResultMap"> -->
@@ -24,8 +25,8 @@
 <!-- 	    offset #{pager.startRow} rows -->
 <!-- 	    fetch first #{pager.rowsPerPage} rows only -->
 <!-- 	</select> -->
-	
-	<select id="getProductSampleList" resultMap="productListResultMap">
+	<!-- 백오피스 상품 조회 부분 샘플. 컬럼 이름 바꿔서 사용할 것 ! -->
+	<!-- <select id="getProductSampleList" resultMap="productListResultMap">
 	SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name
 	  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor ON (pstock.product_color_id = pcolor.id)
 	    JOIN PRODUCT_COMMON pcommon ON (pcolor.product_common_id = pcommon.id)
@@ -33,6 +34,18 @@
 	    JOIN PRODUCT_CATEGORY pcategory ON (pcategory.product_common_id = pcommon.id)
 	    JOIN CATEGORY ON (category.no = pcategory.category_no)
 	    offset 10 rows
+	    fetch first 40 rows only
+	</select> -->
+	
+	<!-- 40개의 샘플 가져오기 -->
+	<select id="getProductSampleList" parameterType="String" resultMap="productListResultMap">
+	SELECT distinct pcolorid, pname, IMG1, pprice, bname, d1name, d2name, d3name
+	  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor USING (pcolorid)
+	    JOIN PRODUCT_COMMON pcommon USING (pcommonid)
+	    JOIN BRAND USING(bno)
+	    JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
+	    JOIN CATEGORY USING(catno)
+        WHERE D1NAME = #{d1name}
 	    fetch first 40 rows only
 	</select>
 	
@@ -45,6 +58,12 @@
 			    JOIN PRODUCT_CATEGORY pcategory ON (pcategory.product_common_id = pcommon.id)
 			    JOIN CATEGORY ON (category.no = pcategory.category_no)
 		)
+	</select>
+	
+	<select id="getD1Names" resultType="String">
+	SELECT d1name
+	  FROM depth1
+	 ORDER BY d1ord
 	</select>
 	
 </mapper>
