@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.ProductDao">
+	<resultMap type="com.mycompany.webapp.dto.ProductList" id="productListResultMap">
+		<id property="pstockId" column="pstockid"/>
+		<result property="productName" column="pname"/>
+		<result property="sizeCode" column="size_code"/>
+		<result property="colorCode" column="color_code"/>
+		<result property="price" column="price"/>
+		<result property="stock" column="stock"/>
+		<result property="brandName" column="bname"/>
+		<result property="depth1Name" column="depth1_name"/>
+		<result property="depth2Name" column="depth2_name"/>
+		<result property="depth3Name" column="depth3_name"/>
+	</resultMap>
+		
+<!-- 	<select id="getProductList" parameterType="com.mycompany.webapp.dto.Pager" resultMap="productListResultMap"> -->
+<!-- 	SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name -->
+<!-- 	  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor ON (pstock.product_color_id = pcolor.id) -->
+<!-- 	    JOIN PRODUCT_COMMON pcommon ON (pcolor.product_common_id = pcommon.id) -->
+<!-- 	    JOIN BRAND ON (pcommon.brand_no = brand.no) -->
+<!-- 	    JOIN PRODUCT_CATEGORY pcategory ON (pcategory.product_common_id = pcommon.id) -->
+<!-- 	    JOIN CATEGORY ON (category.no = pcategory.category_no) -->
+<!-- 	    offset #{pager.startRow} rows -->
+<!-- 	    fetch first #{pager.rowsPerPage} rows only -->
+<!-- 	</select> -->
+	
+	<select id="getProductSampleList" resultMap="productListResultMap">
+	SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name
+	  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor ON (pstock.product_color_id = pcolor.id)
+	    JOIN PRODUCT_COMMON pcommon ON (pcolor.product_common_id = pcommon.id)
+	    JOIN BRAND ON (pcommon.brand_no = brand.no)
+	    JOIN PRODUCT_CATEGORY pcategory ON (pcategory.product_common_id = pcommon.id)
+	    JOIN CATEGORY ON (category.no = pcategory.category_no)
+	    offset 10 rows
+	    fetch first 40 rows only
+	</select>
+	
+	<select id="countAll" resultType="int">
+		select count(*) from(
+			SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name
+			  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor ON (pstock.product_color_id = pcolor.id)
+			    JOIN PRODUCT_COMMON pcommon ON (pcolor.product_common_id = pcommon.id)
+			    JOIN BRAND ON (pcommon.brand_no = brand.no)
+			    JOIN PRODUCT_CATEGORY pcategory ON (pcategory.product_common_id = pcommon.id)
+			    JOIN CATEGORY ON (category.no = pcategory.category_no)
+		)
+	</select>
+	
+</mapper>

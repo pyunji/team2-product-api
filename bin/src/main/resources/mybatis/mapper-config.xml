@@ -2,9 +2,10 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
   
 <configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
 	<typeAliases>
-	<typeAlias alias="category"
-			type="com.mycompany.webapp.dto.Category" />
 <!-- 		<typeAlias type="com.mycompany.webapp.vo.ProductCommon" alias="productCommon"/>
 		<typeAlias type="com.mycompany.webapp.vo.ProductColor" alias="productColor"/>
 		<typeAlias type="com.mycompany.webapp.vo.ProductStock" alias="productStock"/>

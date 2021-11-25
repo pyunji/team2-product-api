@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.CategoryDao">
+	
+		
+	<select id = "selectCategoryD2Name" resultType = "category" parameterType="category">
+		SELECT D2NAME FROM category
+		WHERE D1NAME = #{d1Name}
+		GROUP BY D1NAME, D2NAME
+	</select>
+	
+	<select id = "selectCategoryD3Name" resultType = "category" parameterType="category">
+		SELECT D3NAME FROM category
+		WHERE D1NAME = #{d1Name} AND D2NAME = #{d2Name}
+		GROUP BY D1NAME, D2NAME, D3NAME
+	</select>
+	
+	<select id = "selectCategoryD1Name" resultType = "category" parameterType="category">
+		SELECT D1NAME FROM category
+		GROUP BY D1NAME
+	</select>
+	
+</mapper>
