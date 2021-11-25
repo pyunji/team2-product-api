@@ -14,6 +14,18 @@
 		<result property="d2name" column="d2name"/>
 		<result property="d3name" column="d3name"/>
 	</resultMap>
+	
+	<resultMap type="com.mycompany.webapp.dto.Product" id="productResultMap">
+		<id property="pcommonid" column="pcommonid"/>
+		<result property="pname" column="pname"/>
+		<result property="bname" column="bname"/>
+		<result property="img1" column="img1"/>
+		<result property="color_img" column="color_img"/>
+		<result property="pprice" column="pprice"/>
+		<result property="d1name" column="d1name"/>
+		<result property="d2name" column="d2name"/>
+		<result property="d3name" column="d3name"/>
+	</resultMap>
 		
 <!-- 	<select id="getProductList" parameterType="com.mycompany.webapp.dto.Pager" resultMap="productListResultMap"> -->
 <!-- 	SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name -->
@@ -47,6 +59,22 @@
 	    JOIN CATEGORY USING(catno)
         WHERE D1NAME = #{d1name}
 	    fetch first 40 rows only
+	</select>
+	
+	<select id="getProductListByCategory" parameterType="String" resultMap="productResultMap">
+	SELECT pcommonid, pname, bname, img1, color_img, pprice, d1name,d2name,d3name
+	  FROM PRODUCT_COLOR pcolor
+	    JOIN PRODUCT_COMMON pcommon USING (pcommonid)
+	    JOIN BRAND USING(bno)
+	    JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
+	    JOIN CATEGORY USING(catno)
+        WHERE D1NAME = #{d1name} 
+        <if test="d2name != null">
+        AND D2NAME = #{d2name}
+        </if>
+        <if test="d3name != null"> 
+        AND D3NAME = #{d3name}
+        </if>
 	</select>
 	
 	<select id="countAll" resultType="int">
