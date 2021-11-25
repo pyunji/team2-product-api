@@ -4,14 +4,15 @@ import lombok.Data;
 
 @Data
 public class ProductList {
-	String pstockId;
-	String productName;
-	String sizeCode;
-	String colorCode;
-	Integer price;
+	String pstockid;
+	String pname;
+	String img1;
+	String scode;
+	String ccode;
+	Integer pprice;
 	Integer stock;
-	String brandName;
-	String depth1Name;
-	String depth2Name;
-	String depth3Name;
+	String bname;
+	String d1name;
+	String d2name;
+	String d3name;
 }
