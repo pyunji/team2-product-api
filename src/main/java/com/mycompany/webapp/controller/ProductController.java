@@ -1,5 +1,6 @@
 package com.mycompany.webapp.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.ProductList;
+import com.mycompany.webapp.dto.ProductListView;
 import com.mycompany.webapp.service.CategoryService;
 import com.mycompany.webapp.service.ProductService;
 
@@ -49,6 +52,14 @@ public class ProductController {
 	public List<ProductList> getProductList(@RequestParam String d1name) {
 		log.info("getProductList");
 		List<ProductList> products = productService.getProductSampleList(d1name);
+		log.info("products = {}", products);
+		return products;
+	}
+	
+	@GetMapping("/lists")
+	public List<ProductListView> getProductListByCategory(@RequestParam String d1name,@RequestParam(required=false) String d2name,@RequestParam(required=false) String d3name) {
+		log.info("getProductListByCategory");
+		List<ProductListView> products = productService.getProductListByCategory(d1name,d2name,d3name);
 		log.info("products = {}", products);
 		return products;
 	}
