@@ -24,4 +24,7 @@ public class ProductService {
 	public List<String> getD1Names() {
 		return productDao.getD1Names();
 	}
+	//public List<ProductDetail> getProductDetail(String pcode, String productcolor){
+	//	return productDao.getProductDetail(pcode, productcolor);
+	//}
 }
