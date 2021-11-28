@@ -15,5 +15,6 @@ public interface ProductDao {
 	
 	List<String> getD1Names();
 	
+	//List<ProductDetail> getProductDetail(String pcode, String productcolor);
 	int countAll();
 }
