@@ -68,4 +68,7 @@ public class ProductService<ProuctListView> {
 	public List<Map> getProductsByCategory(CategoryDepth categoryDepthDto){
 		return productDao.getProductByCategory(categoryDepthDto);
 	}
+	//public List<ProductDetail> getProductDetail(String pcode, String productcolor){
+	//	return productDao.getProductDetail(pcode, productcolor);
+	//}
 }
