@@ -60,7 +60,6 @@ public class ProductService<ProuctListView> {
 	public List<String> getD1Names() {
 		return productDao.getD1Names();
 	}
-	
 	public int getProductNum(CategoryDepth categoryDepthDto) {
 		return productDao.countByCategory(categoryDepthDto);
 	}
@@ -68,4 +67,7 @@ public class ProductService<ProuctListView> {
 	public List<Map> getProductsByCategory(CategoryDepth categoryDepthDto){
 		return productDao.getProductByCategory(categoryDepthDto);
 	}
+	//public List<ProductDetail> getProductDetail(String pcode, String productcolor){
+	//	return productDao.getProductDetail(pcode, productcolor);
+	//}
 }
