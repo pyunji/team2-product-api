@@ -15,7 +15,24 @@
 		<result property="d3name" column="d3name"/>
 	</resultMap>
 	
-	<resultMap type="com.mycompany.webapp.dto.Product" id="productResultMap">
+	<resultMap type="java.util.HashMap" id="productListResult">
+		<id property="pcommonid" column="pcommonid"/>
+		<result property="bname" column="bname"/>
+		<result property="pname" column="pname"/>
+		<result property="d1name" column="d1name"/>
+		<result property="d2name" column="d2name"/>
+		<result property="d3name" column="d3name"/>
+		<collection property="colorList" javaType="java.util.ArrayList" resultMap="colorChipMap"/>
+	</resultMap>
+	
+	<resultMap type="java.util.HashMap" id="colorChipMap">
+		<id property="pcolorId" column="pcolorId"/>
+		<result property="img1" column="img1"/>
+		<result property="pprice" column="pprice"/>
+  		<result property="color_img" column="color_img"/>
+	</resultMap>
+	
+	<!-- <resultMap type="com.mycompany.webapp.dto.Product" id="productResult">
 		<id property="pcommonid" column="pcommonid"/>
 		<result property="pname" column="pname"/>
 		<result property="bname" column="bname"/>
@@ -25,7 +42,7 @@
 		<result property="d1name" column="d1name"/>
 		<result property="d2name" column="d2name"/>
 		<result property="d3name" column="d3name"/>
-	</resultMap>
+	</resultMap> -->
 		
 <!-- 	<select id="getProductList" parameterType="com.mycompany.webapp.dto.Pager" resultMap="productListResultMap"> -->
 <!-- 	SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name -->
@@ -61,7 +78,7 @@
 	    fetch first 40 rows only
 	</select>
 	
-	<select id="getProductListByCategory" parameterType="String" resultMap="productResultMap">
+	<!-- <select id="getProductListByCategory" parameterType="String" resultMap="productResultMap">
 	SELECT pcommonid, pname, bname, img1, color_img, pprice, d1name,d2name,d3name
 	  FROM PRODUCT_COLOR pcolor
 	    JOIN PRODUCT_COMMON pcommon USING (pcommonid)
@@ -75,7 +92,7 @@
         <if test="d3name != null"> 
         AND D3NAME = #{d3name}
         </if>
-	</select>
+	</select> -->
 	
 	<select id="countAll" resultType="int">
 		select count(*) from(
@@ -92,6 +109,84 @@
 	SELECT d1name
 	  FROM depth1
 	 ORDER BY d1ord
+	</select>
+	
+	<select id="getProductByCategory" parameterType="com.mycompany.webapp.dto.CategoryDepth" resultMap="productListResult">
+		select rnum, bname, pname, img1, pprice, pcolorId, d1name, d2name, d3name, color_img, pcommonid
+		from (
+		select rownum as rnum, bname, pname, img1, pprice, pcolorId, d1name, d2name, d3name, color_img, pcommonid
+		from (
+			select 
+			brand.bname as bname,
+			pcommon.pname as pname,
+			pcolor.img1 as img1,
+			pcolor.pprice as pprice,
+			pcolor.pcolorid as pcolorId,
+			pcolor.color_img as color_img,
+			pcolor.pcommonid as pcommonid,
+			category.d1name as d1name,
+			category.d2name as d2name,
+			category.d3name as d3name
+			from
+			product_color pcolor
+			join product_common pcommon
+			on (pcolor.pcommonid = pcommon.pcommonid)
+			join brand brand
+			on(pcommon.bno = brand.bno)
+			join product_category pcategory
+			on(pcolor.pcommonid = pcategory.pcommonid)
+			join category category
+			on(category.catno = pcategory.catno)
+			where category.catno in (select catno from category where 
+			d1name=#{depth1}
+			<if test="depth2 != null">
+			and d2name=#{depth2}
+			</if>
+			<if test="depth3 != null"> 
+			and d3name=#{depth3}
+			</if>
+			)
+			order by pcolorId
+		)
+		where rownum &lt;=#{pager.endRowNo}
+		)
+		where rnum &gt;=#{pager.startRowNo}
+	</select>
+	
+	<select id="countByCategory" parameterType="com.mycompany.webapp.dto.CategoryDepth" resultType="int">
+		select count(*) from(
+			select 
+			brand.bname as bname,
+			pcommon.pname as pname,
+			pcolor.img1 as img1,
+			pcolor.pprice as pprice,
+			pcolor.pcolorid as pcolorId,
+			pcolor.color_img as color_img,
+			pcolor.pcommonid as pcommonid,
+			category.d1name as d1name,
+			category.d2name as d2name,
+			category.d3name as d3name
+			from
+			product_color pcolor
+			join product_common pcommon
+			on (pcolor.pcommonid = pcommon.pcommonid)
+			join brand brand
+			on(pcommon.bno = brand.bno)
+			join product_category pcategory
+			on(pcolor.pcommonid = pcategory.pcommonid)
+			join category category
+			on(category.catno = pcategory.catno)
+			where category.catno in (select catno from category where 
+			d1name=#{depth1}
+			<if test="depth2 != null">
+			and d2name=#{depth2}
+			</if>
+			<if test="depth3 != null"> 
+			and d3name=#{depth3}
+			</if>
+		)
+		order by pcolorId
+		)
 	</select>
 	
 </mapper>
