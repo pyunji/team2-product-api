@@ -9,9 +9,13 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.ProductDao;
+import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Product;
+import com.mycompany.webapp.dto.ProductDetail;
 import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.dto.ProductListView;
+import com.mycompany.webapp.dto.ProductStock;
+import com.mycompany.webapp.dto.Size;
 
 @Service
 public class ProductService<ProuctListView> {
@@ -57,6 +61,24 @@ public class ProductService<ProuctListView> {
 	
 	public List<String> getD1Names() {
 		return productDao.getD1Names();
+	}
+	public ProductDetail getProductDetail(String pcolorId) {
+		return productDao.selectProductByPcolorId(pcolorId); 
+	}
+	public List<Color> getColors(String pcolorId){
+		return productDao.selectColorsByPcolorId(pcolorId);
+	}
+	
+	public List<Size> getSizes(String pcolorId){
+		return productDao.selectSizesByPcolorId(pcolorId);
+	}
+	
+	public List<Product> getWithItems(String pcolorId) {
+		return productDao.selectWithItemsByPcolorId(pcolorId);
+	}
+	
+	public List<ProductStock> getStocks(String pcolorId){
+		return productDao.getStock(pcolorId);
 	}
 	//public List<ProductDetail> getProductDetail(String pcode, String productcolor){
 	//	return productDao.getProductDetail(pcode, productcolor);

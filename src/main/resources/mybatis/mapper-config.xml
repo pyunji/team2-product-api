@@ -5,6 +5,10 @@
 	<typeAliases>
 	<typeAlias alias="category"
 			type="com.mycompany.webapp.dto.Category" />
+			<typeAlias type="com.mycompany.webapp.dto.Color" alias="color"/>
+			<typeAlias type="com.mycompany.webapp.vo.ProductCommon" alias="productCommon"/>
+			<typeAlias type="com.mycompany.webapp.dto.ProductStock" alias="productStock"/>
+			
 <!-- 		<typeAlias type="com.mycompany.webapp.vo.ProductCommon" alias="productCommon"/>
 		<typeAlias type="com.mycompany.webapp.vo.ProductColor" alias="productColor"/>
 		<typeAlias type="com.mycompany.webapp.vo.ProductStock" alias="productStock"/>
