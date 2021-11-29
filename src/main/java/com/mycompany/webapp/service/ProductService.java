@@ -2,6 +2,7 @@ package com.mycompany.webapp.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import javax.annotation.Resource;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.ProductDao;
+import com.mycompany.webapp.dto.CategoryDepth;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.dto.ProductListView;
@@ -57,5 +59,13 @@ public class ProductService<ProuctListView> {
 	
 	public List<String> getD1Names() {
 		return productDao.getD1Names();
+	}
+	
+	public int getProductNum(CategoryDepth categoryDepthDto) {
+		return productDao.countByCategory(categoryDepthDto);
+	}
+	
+	public List<Map> getProductsByCategory(CategoryDepth categoryDepthDto){
+		return productDao.getProductByCategory(categoryDepthDto);
 	}
 }
