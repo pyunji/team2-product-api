@@ -1,7 +1,9 @@
 package com.mycompany.webapp.controller;
 
 
+
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +22,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Category;
+
+import com.mycompany.webapp.dto.Product;
+import com.mycompany.webapp.dto.ProductDetail;
+
 import com.mycompany.webapp.dto.CategoryDepth;
+
 import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.dto.ProductListView;
+import com.mycompany.webapp.dto.ProductStock;
+import com.mycompany.webapp.dto.Size;
 import com.mycompany.webapp.service.CategoryService;
 import com.mycompany.webapp.service.ProductService;
 import com.mycompany.webapp.vo.Pager;
@@ -43,7 +57,6 @@ public class ProductController {
 			categoryListJson.put("result","fail");
 		}*/
 	
-	@Autowired ProductService productService;
 	
 	@RequestMapping("")
 	public String content() {
@@ -174,8 +187,35 @@ public class ProductController {
 		String json = categoryListJson.toString();
 
 		return json;
+
 	}
 	
+	@Resource
+	ProductService productService;
+	@ResponseBody
+	@GetMapping("/{depth1}/{depth2}/{depth3}/{pcolorId}")
+	public String detail(@PathVariable String pcolorId, Model model) {
+		pcolorId = "CM2B8KOT264W_DE"; 
+		ProductDetail product = productService.getProductDetail(pcolorId);
+		log.info(product.toString());
+		List<Color> colors = productService.getColors(pcolorId);
+		List<Size> sizes = productService.getSizes(pcolorId);
+		List<Product> withItems = productService.getWithItems(pcolorId);
+		List<ProductStock> stocks = productService.getStocks(pcolorId);
+		
+		
+		model.addAttribute("product", product);
+		model.addAttribute("colors", colors);
+		model.addAttribute("sizes", sizes);
+		model.addAttribute("withItems", withItems);
+		model.addAttribute("stocks", stocks);
+		log.info(model.toString());
+		return "product/productDetail";
+	}
+
+	}
+	
+
 	//@GetMapping("/productDetail")
 	//public String productDetail(String pcode, String productcolor, Model model) {
 		

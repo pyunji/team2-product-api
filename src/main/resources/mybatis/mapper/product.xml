@@ -42,7 +42,33 @@
 		<result property="d1name" column="d1name"/>
 		<result property="d2name" column="d2name"/>
 		<result property="d3name" column="d3name"/>
+
+	</resultMap>
+
+	<resultMap type="productCommon" id="productCommonMap">
+		<id property="pcommonid" column="pcommonId"/>
+		<result property="pname" column="pname"/>
+		<result property="pnote" column="pnote"/>
+		<result property="bno" column="bno"/>
+	</resultMap>
+	
+	<resultMap type="com.mycompany.webapp.dto.ProductDetail" id="productDetailMap">
+		<id property="pcommonid" column="pcommonId"/>
+		<result property="bname" column="bname"/>
+		<result property="pname" column="pname"/>
+		<result property="pprice" column="pprice"/>
+		<result property="pcolorid" column="pcolorid"/>
+		<result property="pcommonid" column="pcommonid"/>
+		<result property="pnote" column="pnote"/>
+		<result property="img1" column="img1"/>
+		<result property="img2" column="img2"/>
+		<result property="img3" column="img3"/>
+		<result property="ccode" column="ccode"/>
+	</resultMap>
+
+
 	</resultMap> -->
+
 		
 <!-- 	<select id="getProductList" parameterType="com.mycompany.webapp.dto.Pager" resultMap="productListResultMap"> -->
 <!-- 	SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name -->
@@ -94,16 +120,16 @@
         </if>
 	</select> -->
 	
-	<select id="countAll" resultType="int">
+<!-- 	<select id="countAll" resultType="int">
 		select count(*) from(
-			SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, price, stock, brand.name bname, depth1_name, depth2_name, depth3_name
-			  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor ON (pstock.product_color_id = pcolor.id)
+			SELECT pstock.id pstockid, pcommon.name pname, size_code, color_code, pprice, stock, brand.name bname, depth1_name, depth2_name, depth3_name
+			  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor ON (pstock.pcolorid = pcolor.id)
 			    JOIN PRODUCT_COMMON pcommon ON (pcolor.product_common_id = pcommon.id)
 			    JOIN BRAND ON (pcommon.brand_no = brand.no)
 			    JOIN PRODUCT_CATEGORY pcategory ON (pcategory.product_common_id = pcommon.id)
 			    JOIN CATEGORY ON (category.no = pcategory.category_no)
 		)
-	</select>
+	</select> -->
 	
 	<select id="getD1Names" resultType="String">
 	SELECT d1name
@@ -111,6 +137,61 @@
 	 ORDER BY d1ord
 	</select>
 	
+
+		<select id="selectProductByPcolorId" parameterType="String" resultMap="productDetailMap">
+		select distinct brand.bname , product_common.pname  
+				, product_color.pprice, product_color.pcolorid as pcolorId, product_common.pcommonid as pcommonId, product_common.pnote
+				, img1, img2, img3, product_color.ccode 
+			from product_common, product_color, brand, product_stock
+			where product_common.pcommonid = product_color.pcommonid 
+			and brand.bno = product_common.bno
+			and product_stock.pcolorid = product_color.pcolorid
+	        and product_color.pcolorid = #{pcolorId}
+	</select>
+	
+	<!-- 상품의 컬러 리스트 출력하기 -->
+	<select id="selectColorsByPcolorId" parameterType="String" resultType="com.mycompany.webapp.dto.Color">
+	select distinct product_color.ccode, product_color.img1
+	    from product_common, product_color
+	    where product_color.pcommonid = (select product_common.pcommonid 
+	        from product_color, product_common 
+	        where product_color.pcolorid = #{pcolorId}
+	        and product_color.pcommonid = product_common.pcommonid)
+	</select>
+	<!-- 상품의 사이즈 리스트 출력하기 -->
+	<select id="selectSizesByPcolorId" parameterType="String" resultType="com.mycompany.webapp.dto.Size">
+	select scode
+	from (select distinct sizes.sno, sizes.scode
+	    from product_color, product_stock, SIZES
+	    where product_color.pcolorid = #{pcolorId}
+	    and product_color.pcolorid = product_stock.pcolorid
+	    and sizes.scode = product_stock.scode
+	    order by sizes.sno)
+	</select>
+	
+	<!-- 함께 코디한 상품의 정보 pcolorId로 가져오기 -->
+	<select id="selectWithItemsByPcolorId" parameterType="String" resultMap="productResultMap">
+	select distinct brand.bname , product_common.pname  , product_color.pcolorid 
+					, product_color.pprice, product_color.pcommonid , product_color.img1
+	from product_color, brand, product_common
+	where product_color.pcolorid in (
+        select distinct w.wcolorid as wcolorId
+        from with_product w left join product_color p on (w.pcolorid = p.pcolorid)
+        where p.pcolorid = #{pcolorId}
+        )
+    and product_common.pcommonid = product_color.pcommonid
+	and product_common.bno = brand.bno
+	</select>
+	
+	<!-- 제품의 사이즈 정보와 재고 정보를 사이즈 순서로 획득한다.-->
+	<select id="getStock" parameterType="String" resultType="com.mycompany.webapp.dto.ProductStock">
+		SELECT product_color.pcolorid , sizes.SCODE , product_stock.pstockid
+		FROM PRODUCT_STOCK, PRODUCT_COLOR, SIZES
+		WHERE PRODUCT_STOCK.pcolorid = product_color.pcolorid 
+		AND sizes.scode = PRODUCT_STOCK.SCODE
+		AND PRODUCT_COLOR.pcolorid = #{pcolorId}
+		ORDER BY SIZES.SNO
+
 	<select id="getProductByCategory" parameterType="com.mycompany.webapp.dto.CategoryDepth" resultMap="productListResult">
 		select rnum, bname, pname, img1, pprice, pcolorId, d1name, d2name, d3name, color_img, pcommonid
 		from (
@@ -187,6 +268,7 @@
 		)
 		order by pcolorId
 		)
+
 	</select>
 	
 </mapper>
