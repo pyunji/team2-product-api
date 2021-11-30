@@ -13,6 +13,7 @@ import com.mycompany.webapp.dto.ProductDetail;
 import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.dto.ProductStock;
 import com.mycompany.webapp.dto.Size;
+import com.mycompany.webapp.dto.Stock;
 
 @Mapper
 public interface ProductDao {
@@ -40,4 +41,6 @@ public interface ProductDao {
 	int countByCategory(CategoryDepth categoryDepthDto);
 	
 	List<Map> getProductByCategory(CategoryDepth categoryDepthDto);
+	
+	int reduceStock(Stock stockToReduce);
 }
