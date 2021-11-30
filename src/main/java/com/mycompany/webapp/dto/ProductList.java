@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProductList {
+	String pcolorid;
 	String pstockid;
 	String pname;
 	String img1;

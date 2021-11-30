@@ -41,6 +41,7 @@
 	
 	<resultMap type="com.mycompany.webapp.dto.ProductList" id="productListResultMap">
 		<id property="pstockid" column="pstockid"/>
+		<result property="pcolorid" column="pcolorid"/>
 		<result property="pname" column="pname"/>
 		<result property="img1" column="img1"/>
 		<result property="scode" column="scode"/>
