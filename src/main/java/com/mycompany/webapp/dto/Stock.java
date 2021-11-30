@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class Stock {
 	String pstockid;
-	Integer Quantity;
+	Integer quantity;
 }
