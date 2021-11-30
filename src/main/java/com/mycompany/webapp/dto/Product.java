@@ -1,16 +1,18 @@
 package com.mycompany.webapp.dto;
 
+import com.mycompany.webapp.vo.Brand;
+import com.mycompany.webapp.vo.CategoryVo;
+import com.mycompany.webapp.vo.ProductColor;
+import com.mycompany.webapp.vo.ProductCommon;
+import com.mycompany.webapp.vo.ProductStock;
+
 import lombok.Data;
 
 @Data
-public class Product{
-	String pcommonid;
-	String pname;
-	String bname;
-	String img1;
-	String color_img;
-	int pprice;
-	String d1name;
-	String d2name;
-	String d3name;
+public class Product {
+	private ProductCommon productCommon;
+	private ProductColor productColor;
+	private ProductStock productStock;
+	private Brand brand;
+	private CategoryVo category;
 }

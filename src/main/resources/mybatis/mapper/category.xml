@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.CategoryDao">
 
+	<resultMap type="categoryVo" id="categoryMap">
+		<id property="catno" column="catno"/>
+		<result property="d1name" column="d1name"/>
+		<result property="d2name" column="d2name"/>
+		<result property="d3name" column="d3name"/>
+	</resultMap>
 
 	<select id="selectCategoryD2Name" resultType="category"
 		parameterType="category">
@@ -23,6 +29,19 @@
 		SELECT d1name
 		FROM depth1
 		ORDER BY d1ord
+	</select>
+	
+	<!-- pcolorId로 카테고리 뽑아오기-->
+	<select id="selectCategoryByPcolorId" parameterType="String" resultMap="categoryMap">
+	select * from (
+		select distinct category.catno, category.d1name, category.d2name, category.d3name
+			from product_common, product_color, product_category, category
+            where product_color.pcolorid = #{pcolorId}
+	        and product_color.pcommonid = product_common.pcommonid
+            and product_category.pcommonid = product_common.pcommonid
+            and product_category.catno = category.catno
+            order by length(d2name))
+            where rownum=1
 	</select>
 
 </mapper>

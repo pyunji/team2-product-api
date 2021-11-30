@@ -2,8 +2,9 @@ package com.mycompany.webapp.controller;
 
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 
@@ -12,32 +13,26 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.webapp.dto.Category;
-
+import com.mycompany.webapp.dto.CategoryDepth;
+import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.ProductDetail;
-
-import com.mycompany.webapp.dto.CategoryDepth;
-
 import com.mycompany.webapp.dto.ProductList;
-import com.mycompany.webapp.dto.ProductListView;
 import com.mycompany.webapp.dto.ProductStock;
 import com.mycompany.webapp.dto.Size;
 import com.mycompany.webapp.service.CategoryService;
 import com.mycompany.webapp.service.ProductService;
+import com.mycompany.webapp.vo.CategoryVo;
 import com.mycompany.webapp.vo.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,10 +44,11 @@ public class ProductController {
 	
 	public static JSONObject categoryListJson = new JSONObject();
 	
-	/*	public ProductController() {
-			categoryListJson.put("result","fail");
-		}*/
+	@Resource
+	ProductService productService;
 	
+	@Resource
+	CategoryService categoryService;
 	
 	@RequestMapping("")
 	public String content() {
@@ -64,14 +60,6 @@ public class ProductController {
 	public List<ProductList> getProductList(@RequestParam String d1name) {
 		log.info("getProductList");
 		List<ProductList> products = productService.getProductSampleList(d1name);
-		log.info("products = {}", products);
-		return products;
-	}
-	
-	@GetMapping("/lists")
-	public List<ProductListView> getProductListByCategory(@RequestParam String d1name,@RequestParam(required=false) String d2name,@RequestParam(required=false) String d3name) {
-		log.info("getProductListByCategory");
-		List<ProductListView> products = productService.getProductListByCategory(d1name,d2name,d3name);
 		log.info("products = {}", products);
 		return products;
 	}
@@ -120,9 +108,6 @@ public class ProductController {
 	public String addProduct() {
 		return "product/add";
 	}
-	
-	@Resource
-	CategoryService categoryService;
 	
 	@GetMapping(value = "/getCategoryList", produces = "application/json; charset=UTF-8")
 	@ResponseBody
@@ -186,38 +171,32 @@ public class ProductController {
 
 	}
 	
-	@Resource
-	ProductService productService;
-	@ResponseBody
+	@RequestMapping("/set/{pcolorId}")
+	public String setCategoryAndReturn(@PathVariable String pcolorId) throws UnsupportedEncodingException {
+		CategoryVo category = categoryService.setCategories(pcolorId);
+		String d1name = category.getD1name();
+		String d2name = category.getD2name();
+		String d3name = URLEncoder.encode(category.getD3name(), "UTF-8");
+		String redirect = "redirect:/product/"+d1name+"/"+d2name+"/"+d3name+"/"+pcolorId;
+		
+		return redirect;
+	}
+	
 	@GetMapping("/{depth1}/{depth2}/{depth3}/{pcolorId}")
-	public String detail(@PathVariable String pcolorId, Model model) {
-		pcolorId = "CM2B8KOT264W_DE"; 
-		ProductDetail product = productService.getProductDetail(pcolorId);
-		log.info(product.toString());
+	public Map<String,Object> detail(@PathVariable String pcolorId) {
+		ProductDetail product = productService.getProductDetail(pcolorId);		
 		List<Color> colors = productService.getColors(pcolorId);
 		List<Size> sizes = productService.getSizes(pcolorId);
 		List<Product> withItems = productService.getWithItems(pcolorId);
 		List<ProductStock> stocks = productService.getStocks(pcolorId);
 		
-		
-		model.addAttribute("product", product);
-		model.addAttribute("colors", colors);
-		model.addAttribute("sizes", sizes);
-		model.addAttribute("withItems", withItems);
-		model.addAttribute("stocks", stocks);
-		log.info(model.toString());
-		return "product/productDetail";
+		Map<String,Object> map = new HashMap<>();
+		map.put("product", product);
+		map.put("colors", colors);
+		map.put("sizes", sizes);
+		map.put("withItems", withItems);
+		map.put("stocks", stocks);
+
+		return map;
 	}
-
-	}
-	
-
-	//@GetMapping("/productDetail")
-	//public String productDetail(String pcode, String productcolor, Model model) {
-		
-	//}
-
-//	@RequestMapping("/create")
-//	public String create() {
-//		
-//	}
+}
