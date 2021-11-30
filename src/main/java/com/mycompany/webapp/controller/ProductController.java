@@ -66,6 +66,24 @@ public class ProductController {
 		return products;
 	}
 	
+	//등록 날짜 순으로 최근 등록된 상품 40개 가져오기
+	@GetMapping("/new")
+	public List<ProductList> getNewProductList(@RequestParam String d1name) {
+		log.info("getNewProductList");
+		List<ProductList> products = productService.getNewProductList(d1name);
+		log.info("products = {}", products);
+		return products;
+	}
+	
+	//판매량 순으로 가장 많이 팔린 상품 40개 가져오기
+	@GetMapping("/best")
+	public List<ProductList> getBestProductList(@RequestParam String d1name) {
+		log.info("getBestProductList");
+		List<ProductList> products = productService.getBestProductList(d1name);
+		log.info("products = {}", products);
+		return products;
+	}
+	
 	@GetMapping("/list/{depth1}/{depth2}/{depth3}")
 	public Map<String,Object> searchByCategory(@PathVariable String depth1, @PathVariable String depth2, @PathVariable String depth3,@RequestParam(defaultValue = "1") int pageNo) {
 		log.info("실행");

@@ -18,7 +18,9 @@ import com.mycompany.webapp.dto.Size;
 public interface ProductDao {
 	List<ProductList> getProductSampleList(String d1name);
 	
-//	List<Product> getProductListByCategory(String d1name,String d2name, String d3name);
+	List<ProductList> getNewProductList(String d1name);
+	
+	List<ProductList> getBestProductList(String d1name);
 	
 	List<String> getD1Names();
 	
