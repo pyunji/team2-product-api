@@ -30,35 +30,35 @@ public class ProductService<ProuctListView> {
 		return productDao.getProductSampleList(d1name);
 	}
 	
-	public List<ProductListView> getProductListByCategory(String d1name,String d2name,String d3name){
-		
-		List<Product> list = productDao.getProductListByCategory(d1name,d2name,d3name);
-		TreeMap<String,ProductListView> tm = new TreeMap<>();
-		
-		for(Product p : list) {
-			if(tm.containsKey(p.getPcommonid())) {
-				ProductListView plist = tm.get(p.getPcommonid());
-				plist.getImgs().add(p.getImg1());
-				plist.getColor_imgs().add(p.getColor_img());
-				
-				tm.put(p.getPcommonid(), plist);
-			}else {
-				ProductListView plist = new ProductListView(p.getPname(),p.getBname(),p.getPprice(),
-						new ArrayList<String>(),new ArrayList<String>(),p.getD1name(),p.getD2name(),p.getD3name());
-				plist.getImgs().add(p.getImg1());
-				plist.getColor_imgs().add(p.getColor_img());
-				
-				tm.put(p.getPcommonid(), plist);
-			}
-		}
-		
-		List<ProductListView> result = new ArrayList<>();
-		for(String key : tm.keySet()) {
-			result.add(tm.get(key));
-		}
-		
-		return result;
-	}
+//	public List<ProductListView> getProductListByCategory(String d1name,String d2name,String d3name){
+//		
+//		List<Product> list = productDao.getProductListByCategory(d1name,d2name,d3name);
+//		TreeMap<String,ProductListView> tm = new TreeMap<>();
+//		
+//		for(Product p : list) {
+//			if(tm.containsKey(p.getPcommonid())) {
+//				ProductListView plist = tm.get(p.getPcommonid());
+//				plist.getImgs().add(p.getImg1());
+//				plist.getColor_imgs().add(p.getColor_img());
+//				
+//				tm.put(p.getPcommonid(), plist);
+//			}else {
+//				ProductListView plist = new ProductListView(p.getPname(),p.getBname(),p.getPprice(),
+//						new ArrayList<String>(),new ArrayList<String>(),p.getD1name(),p.getD2name(),p.getD3name());
+//				plist.getImgs().add(p.getImg1());
+//				plist.getColor_imgs().add(p.getColor_img());
+//				
+//				tm.put(p.getPcommonid(), plist);
+//			}
+//		}
+//		
+//		List<ProductListView> result = new ArrayList<>();
+//		for(String key : tm.keySet()) {
+//			result.add(tm.get(key));
+//		}
+//		
+//		return result;
+//	}
 	
 	public Integer getTotalCount() {
 		return productDao.countAll();
@@ -85,6 +85,7 @@ public class ProductService<ProuctListView> {
 	
 	public List<ProductStock> getStocks(String pcolorId){
 		return productDao.getStock(pcolorId);
+	}
 
 	public int getProductNum(CategoryDepth categoryDepthDto) {
 		return productDao.countByCategory(categoryDepthDto);

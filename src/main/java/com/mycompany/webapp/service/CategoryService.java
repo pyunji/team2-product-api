@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CategoryDao;
 import com.mycompany.webapp.dto.Category;
+import com.mycompany.webapp.vo.CategoryVo;
 
 @Service
 public class CategoryService {
@@ -30,4 +31,7 @@ public class CategoryService {
 		return categoryDao.selectCategoryD3Name(forD3Name);
 	}
 	
+	public CategoryVo setCategories(String pcolorId) {
+		return categoryDao.selectCategoryByPcolorId(pcolorId);
+	}	
 }
