@@ -189,7 +189,8 @@ public class ProductController {
 	@GetMapping("/{depth1}/{depth2}/{depth3}/{pcolorId}")
 	public Map<String,Object> detail(@PathVariable String pcolorId) {
 		log.info("detail 실행");
-		ProductDetail product = productService.getProductDetail(pcolorId);		
+    
+		ProductDetail product = productService.getProductDetail(pcolorId);
 		List<Color> colors = productService.getColors(pcolorId);
 		List<Size> sizes = productService.getSizes(pcolorId);
 		List<Product> withItems = productService.getWithItems(pcolorId);

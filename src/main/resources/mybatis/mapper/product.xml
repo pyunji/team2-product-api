@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.ProductDao">
+
+	<resultMap type="productCommon" id="productCommonMap">
+		<id property="pcommonid" column="pcommonId"/>
+		<result property="pname" column="pname"/>
+		<result property="pnote" column="pnote"/>
+		<result property="bno" column="bno"/>
+	</resultMap>
+	
+	<resultMap type="productColor" id="productColorMap">
+		<id property="id" column="pcolorId"/>
+		<result property="img1" column="img1"/>
+		<result property="img2" column="img2"/>
+		<result property="img3" column="img3"/>
+		<result property="colorImg" column="color_Img"/>
+		<result property="productCommonId" column="pcommonid"/>
+		<result property="colorCode" column="ccode"/>
+		<result property="price" column="pprice"/>
+	</resultMap>
+	
+	<resultMap type="productStock" id="productStockMap">
+		<id property="id" column="pstockid"/>
+		<result property="productColorId" column="pcolorid"/>
+		<result property="sizeCode" column="scode"/>
+		<result property="stock" column="stock"/>
+	</resultMap>
+
+	<resultMap type="brand" id="brandMap">
+		<id property="no" column="bno"/>
+		<result property="name" column="bname"/>
+	</resultMap>
+	
+	<resultMap type="categoryVo" id="categoryMap">
+		<id property="catno" column="catno"/>
+		<result property="d1name" column="d1name"/>
+		<result property="d2name" column="d2name"/>
+		<result property="d3name" column="d3name"/>
+	</resultMap>
+	
 	<resultMap type="com.mycompany.webapp.dto.ProductList" id="productListResultMap">
 		<id property="pstockid" column="pstockid"/>
 		<result property="pname" column="pname"/>
