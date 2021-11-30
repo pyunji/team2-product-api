@@ -127,6 +127,30 @@
 	    fetch first 40 rows only
 	</select>
 	
+	<select id="getNewProductList" parameterType="String" resultMap="productListResultMap">
+	SELECT distinct pcolorid, pname, IMG1, pprice, bname, d1name, d2name, d3name
+	  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor USING (pcolorid)
+	    JOIN PRODUCT_COMMON pcommon USING (pcommonid)
+	    JOIN BRAND USING(bno)
+	    JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
+	    JOIN CATEGORY USING(catno)
+        WHERE D1NAME = #{d1name}
+        ORDER BY pstock.reg_date DESC
+	    fetch first 40 rows only
+	</select>
+	
+	<select id="getBestProductList" parameterType="String" resultMap="productListResultMap">
+	SELECT distinct pcolorid, pname, IMG1, pprice, bname, d1name, d2name, d3name
+	  FROM PRODUCT_STOCK pstock JOIN PRODUCT_COLOR pcolor USING (pcolorid)
+	    JOIN PRODUCT_COMMON pcommon USING (pcommonid)
+	    JOIN BRAND USING(bno)
+	    JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
+	    JOIN CATEGORY USING(catno)
+        WHERE D1NAME = #{d1name}
+        ORDER BY PSTOCK.SALES DESC
+	    fetch first 40 rows only
+	</select>
+	
 	<!-- <select id="getProductListByCategory" parameterType="String" resultMap="productResultMap">
 	SELECT pcommonid, pname, bname, img1, color_img, pprice, d1name,d2name,d3name
 	  FROM PRODUCT_COLOR pcolor
