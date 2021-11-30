@@ -14,5 +14,5 @@ public class Product {
 	private ProductColor productColor;
 	private ProductStock productStock;
 	private Brand brand;
-	private CategoryVo category;
+	private CategoryVo categoryVo;
 }
