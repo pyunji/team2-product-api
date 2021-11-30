@@ -2,6 +2,7 @@ package com.mycompany.webapp.controller;
 
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -172,18 +174,21 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/set/{pcolorId}")
-	public String setCategoryAndReturn(@PathVariable String pcolorId) throws UnsupportedEncodingException {
+	public void setCategoryAndReturn(@PathVariable String pcolorId,HttpServletResponse response) throws IOException {
+		log.info("setCategoryAndReturn 실행");
 		CategoryVo category = categoryService.setCategories(pcolorId);
 		String d1name = category.getD1name();
 		String d2name = category.getD2name();
 		String d3name = URLEncoder.encode(category.getD3name(), "UTF-8");
-		String redirect = "redirect:/product/"+d1name+"/"+d2name+"/"+d3name+"/"+pcolorId;
+		String redirect = "/product/"+d1name+"/"+d2name+"/"+d3name+"/"+pcolorId;
+		log.info(redirect);
 		
-		return redirect;
+		response.sendRedirect(redirect);
 	}
 	
 	@GetMapping("/{depth1}/{depth2}/{depth3}/{pcolorId}")
 	public Map<String,Object> detail(@PathVariable String pcolorId) {
+		log.info("detail 실행");
 		ProductDetail product = productService.getProductDetail(pcolorId);		
 		List<Color> colors = productService.getColors(pcolorId);
 		List<Size> sizes = productService.getSizes(pcolorId);
@@ -196,6 +201,8 @@ public class ProductController {
 		map.put("sizes", sizes);
 		map.put("withItems", withItems);
 		map.put("stocks", stocks);
+		
+		log.info(map.toString());
 
 		return map;
 	}
