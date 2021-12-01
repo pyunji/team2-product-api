@@ -160,7 +160,7 @@
 	</select>
 	
  	<select id="selectColorsByPcolorId" parameterType="String" resultType="com.mycompany.webapp.dto.Color">
-		select distinct product_color.ccode, product_color.img1
+		select distinct product_color.ccode, product_color.img1, product_color.img2, product_color.img3, product_color.color_img
 		    from product_common, product_color
 		    where product_color.pcommonid = (select product_common.pcommonid 
 		        from product_color, product_common 
