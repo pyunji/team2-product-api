@@ -8,6 +8,15 @@
 		<result property="pnote" column="pnote"/>
 		<result property="bno" column="bno"/>
 	</resultMap>
+	
+		<resultMap type="productWithItems" id="productWithItemsMap">
+		<id property="pcommonid" column="pcommonId"/>
+		<result property="bname" column="bname"/>
+		<result property="pname" column="pname"/>
+		<result property="pprice" column="pprice"/>
+		<result property="pcolorid" column="pcolorid"/>
+		<result property="img1" column="img1"/>
+	</resultMap>
 
 	<resultMap type="productColor" id="productColorMap">
 		<id property="id" column="pcolorId"/>
@@ -205,7 +214,7 @@
 		        where product_color.pcolorid = #{pcolorId}
 		        and product_color.pcommonid = product_common.pcommonid)
 	</select>
-
+ 
 	<select id="selectSizesByPcolorId" parameterType="String" resultType="com.mycompany.webapp.dto.Size">
 	select scode
 	from (select distinct sizes.sno, sizes.scode
@@ -217,9 +226,9 @@
 	</select>
 	
 
-	<select id="selectWithItemsByPcolorId" parameterType="String" resultMap="productMap">
-	select distinct brand.bname , product_common.pname  , product_color.pcolorid 
-					, product_color.pprice, product_color.pcommonid , product_color.img1
+	<select id="selectWithItemsByPcolorId" parameterType="String" resultMap="productWithItemsMap">
+	select distinct brand.bname  , product_common.pname , product_color.pcolorid 
+					, product_color.pprice , product_color.pcommonid , product_color.img1 
 	from product_color, brand, product_common
 	where product_color.pcolorid in (
         select distinct w.wcolorid as wcolorId
