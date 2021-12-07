@@ -10,6 +10,7 @@
 	<typeAlias type="com.mycompany.webapp.vo.ProductStock" alias="productStock"/>
 	<typeAlias type="com.mycompany.webapp.vo.CategoryVo" alias="categoryVo"/>
 	<typeAlias type="com.mycompany.webapp.vo.Brand" alias="brand"/>
+	<typeAlias type="com.mycompany.webapp.vo.ProductWithItems" alias="productWithItems"/>
 	
 			
 <!-- 		<typeAlias type="com.mycompany.webapp.vo.ProductCommon" alias="productCommon"/>
