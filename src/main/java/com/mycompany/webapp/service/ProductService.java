@@ -1,26 +1,21 @@
 package com.mycompany.webapp.service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.ProductDao;
-
-import com.mycompany.webapp.dto.Color;
-
 import com.mycompany.webapp.dto.CategoryDepth;
 import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Product;
 import com.mycompany.webapp.dto.ProductDetail;
 import com.mycompany.webapp.dto.ProductList;
-import com.mycompany.webapp.dto.ProductListView;
 import com.mycompany.webapp.dto.ProductStock;
 import com.mycompany.webapp.dto.Size;
+import com.mycompany.webapp.dto.SmryProduct;
 import com.mycompany.webapp.dto.Stock;
 
 @Service
@@ -60,6 +55,9 @@ public class ProductService<ProuctListView> {
 	
 	public List<Product> getWithItems(String pcolorId) {
 		return productDao.selectWithItemsByPcolorId(pcolorId);
+	}
+	public List<SmryProduct> getSmryWithItems(String pcolorId){
+		return productDao.selectSmryWithItemsByPcolorId(pcolorId);
 	}
 	
 	public List<ProductStock> getStocks(String pcolorId){

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.mycompany.webapp.dto.Category;
 import com.mycompany.webapp.dto.CategoryDepth;
 import com.mycompany.webapp.dto.Color;
 import com.mycompany.webapp.dto.Product;
@@ -13,6 +12,7 @@ import com.mycompany.webapp.dto.ProductDetail;
 import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.dto.ProductStock;
 import com.mycompany.webapp.dto.Size;
+import com.mycompany.webapp.dto.SmryProduct;
 import com.mycompany.webapp.dto.Stock;
 
 @Mapper
@@ -37,7 +37,7 @@ public interface ProductDao {
 	
 	List<ProductStock> getStock(String pcolorId);
 
-	
+	List<SmryProduct> selectSmryWithItemsByPcolorId(String pcolorId);
 	int countByCategory(CategoryDepth categoryDepthDto);
 	
 	List<Map> getProductByCategory(CategoryDepth categoryDepthDto);

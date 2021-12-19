@@ -203,6 +203,16 @@ public class ProductController {
 		
 		response.sendRedirect(redirect);
 	}
+	@GetMapping("/get/WithItems/{pcolorId}")
+	public Map<String, Object> getWithItems(@PathVariable String pcolorId){
+		 log.info("getWithItems 실행");
+		
+		List<Product> smryWithItems = productService.getSmryWithItems(pcolorId);
+		Map<String,Object> map = new HashMap<>();
+		map.put("smryWithItems", smryWithItems);
+		log.info(map.toString());
+		return map;
+	}
 	
 	@GetMapping("/{depth1}/{depth2}/{depth3}/{pcolorId}")
 	public Map<String,Object> detail(@PathVariable String pcolorId) {
