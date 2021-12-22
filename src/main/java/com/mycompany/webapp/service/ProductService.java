@@ -19,7 +19,7 @@ import com.mycompany.webapp.dto.SmryProduct;
 import com.mycompany.webapp.dto.Stock;
 
 @Service
-public class ProductService<ProuctListView> {
+public class ProductService {
 	@Resource private ProductDao productDao;
 	
 	public List<ProductList> getProductSampleList(String d1name){

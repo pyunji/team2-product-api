@@ -32,6 +32,7 @@ import com.mycompany.webapp.dto.ProductDetail;
 import com.mycompany.webapp.dto.ProductList;
 import com.mycompany.webapp.dto.ProductStock;
 import com.mycompany.webapp.dto.Size;
+import com.mycompany.webapp.dto.SmryProduct;
 import com.mycompany.webapp.service.CategoryService;
 import com.mycompany.webapp.service.ProductService;
 import com.mycompany.webapp.vo.CategoryVo;
@@ -194,6 +195,7 @@ public class ProductController {
 	@RequestMapping("/set/{pcolorId}")
 	public void setCategoryAndReturn(@PathVariable String pcolorId,HttpServletResponse response) throws IOException {
 		log.info("setCategoryAndReturn 실행");
+		log.info("pcolorId = " + pcolorId);
 		CategoryVo category = categoryService.setCategories(pcolorId);
 		String d1name = category.getD1name();
 		String d2name = category.getD2name();
@@ -204,11 +206,11 @@ public class ProductController {
 		response.sendRedirect(redirect);
 	}
 	@GetMapping("/get/WithItems/{pcolorId}")
-	public Map<String, Object> getWithItems(@PathVariable String pcolorId){
-		 log.info("getWithItems 실행");
+	public Map<String, List<SmryProduct>> getWithItems(@PathVariable String pcolorId){
+		log.info("getWithItems 실행");
 		
-		List<Product> smryWithItems = productService.getSmryWithItems(pcolorId);
-		Map<String,Object> map = new HashMap<>();
+		List<SmryProduct> smryWithItems = productService.getSmryWithItems(pcolorId);
+		Map<String,List<SmryProduct>> map = new HashMap<>();
 		map.put("smryWithItems", smryWithItems);
 		log.info(map.toString());
 		return map;

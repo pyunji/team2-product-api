@@ -143,6 +143,7 @@
 		JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
 		JOIN CATEGORY USING(catno)
 		WHERE D1NAME = #{d1name}
+		and del_date is null
 		fetch first 40 rows only
 	</select>
 
@@ -155,6 +156,7 @@
 		JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
 		JOIN CATEGORY USING(catno)
 		WHERE D1NAME = #{d1name}
+		and del_date is null
 		ORDER BY pstock.reg_date DESC
 		fetch first 40 rows only
 	</select>
@@ -168,6 +170,7 @@
 		JOIN PRODUCT_CATEGORY pcategory USING (pcommonid)
 		JOIN CATEGORY USING(catno)
 		WHERE D1NAME = #{d1name}
+		and del_date is null
 		ORDER BY PSTOCK.SALES DESC
 		fetch first 40 rows only
 	</select>
@@ -206,6 +209,7 @@
 		and brand.bno = product_common.bno
 		and product_stock.pcolorid = product_color.pcolorid
 		and product_color.pcolorid = #{pcolorId}
+		and del_date is null
 	</select>
 
 	<select id="selectColorsByPcolorId" parameterType="String"
